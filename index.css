@@ -1,0 +1,178 @@
+body {
+    background: #000;
+    margin: 0;
+}
+
+.main {
+    display: none;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    color: #0f0;
+    opacity: 0.9;
+    font-family: consolas;
+}
+
+.main-panel {
+    position: absolute;
+    text-align: center;
+    left: 10%;
+    right: 10%;
+    top: 30%;
+}
+
+.main-panel-button {
+    border: 0;
+    background-color: rgba(0, 255, 0, 0.788);
+    color: #000;
+    font-size: 14pt;
+    padding: 7px;
+}
+
+.main-panel-button:hover {
+    background-color: #0f0;
+}
+
+.game {
+    display: none;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    color: #0f0;
+    opacity: 0.9;
+    font-family: consolas;
+}
+
+.game-text-panel {
+    margin-top: 10%;
+    margin-bottom: 5%;
+    text-align: center;
+    width: 100%;
+    font-size: 32px;
+}
+
+.game-text-panel>span {
+    border-right: .40em solid #0f0;
+    animation: blinking 1s infinite;
+}
+
+.game-panel {
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 10px;
+    margin-bottom: 5%;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.game-panel-char-box {
+    height: 100%;
+    width: 100%;
+    border: 3px solid #0f0;
+    box-shadow: 1px 1px #0f0;
+    margin: 5px;
+}
+
+.game-panel-char-box>span {
+    font-family: consolas;
+    width: 100%;
+    font-size: 3vw;
+    margin: 1vw;
+    padding: 1vw;
+}
+
+.game-panel-char-box.opened {
+    box-shadow: 1px 1px 10px 5px #0f0;
+}
+
+.game-panel-char-box.closed {
+    background-color: rgb(0, 128, 0);
+}
+
+.game-panel-char-box.typing {
+    animation: type 0.4s infinite;
+}
+
+.game-panel-char-box>span.typing {
+    height: 80%;
+    animation: type 0.4s infinite;
+}
+
+@keyframes type {
+    from {
+        background-color: #000
+    }
+
+    to {
+        background-color: #0f0;
+    }
+}
+
+.typing-container {
+    display: inline-block;
+}
+
+.typed-out {
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 1.6rem;
+    width: 0;
+    border-right: .40em solid #0f0;
+    animation: typing 1s steps(20, end) forwards, blinking 0.4s infinite;
+}
+
+@keyframes typing {
+    from {
+        width: 0
+    }
+
+    to {
+        width: 100%
+    }
+}
+
+@keyframes blinking {
+    from {
+        border-color: transparent
+    }
+
+    to {
+        border-color: #0f0;
+    }
+}
+
+.keys {
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly; 
+}
+
+.key-button {
+    border: 3px solid #0f0;
+    box-shadow: 1px 1px #0f0;
+    background-color: rgba(0, 255, 0, 0.76);
+    text-align: center;
+    color: #000;
+    cursor: pointer;
+    font-family: consolas;
+    display: inline-block;
+    font-size: 32px;
+    margin: 0.5vw;
+    padding: 0.5vw;
+    width: 50px;
+}
+
+.key-button:hover {
+    box-shadow: 1px 1px 3px 5px #0f0;
+    background-color: #0f0;
+}
