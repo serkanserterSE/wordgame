@@ -57,7 +57,7 @@ body {
 
 .game-text-panel>span {
     border-right: .40em solid #0f0;
-    animation: blinking 1s infinite;
+    animation: blinking 0.3s infinite;
 }
 
 .game-panel {
