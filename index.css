@@ -1,6 +1,7 @@
 body {
     background: #000;
     margin: 0;
+    font-family: consolas;
 }
 
 .main {
@@ -12,7 +13,6 @@ body {
     top: 0;
     color: #0f0;
     opacity: 0.9;
-    font-family: consolas;
 }
 
 .main-panel {
@@ -44,7 +44,6 @@ body {
     top: 0;
     color: #0f0;
     opacity: 0.9;
-    font-family: consolas;
 }
 
 .game-text-panel {
@@ -68,12 +67,13 @@ body {
     text-align: center;
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    flex-flow: wrap;
+    justify-content:center;
 }
 
 .game-panel-char-box {
     height: 100%;
-    width: 100%;
+    min-width: 40px;
     border: 3px solid #0f0;
     box-shadow: 1px 1px #0f0;
     margin: 5px;
@@ -82,7 +82,7 @@ body {
 .game-panel-char-box>span {
     font-family: consolas;
     width: 100%;
-    font-size: 3vw;
+    font-size: 40px;
     margin: 1vw;
     padding: 1vw;
 }
@@ -154,7 +154,7 @@ body {
     text-align: center;
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly; 
+    justify-content: space-evenly;
 }
 
 .key-button {
@@ -164,7 +164,6 @@ body {
     text-align: center;
     color: #000;
     cursor: pointer;
-    font-family: consolas;
     display: inline-block;
     font-size: 32px;
     margin: 0.5vw;
@@ -175,4 +174,9 @@ body {
 .key-button:hover {
     box-shadow: 1px 1px 3px 5px #0f0;
     background-color: #0f0;
+}
+
+.flex-break {
+    flex-basis: 100%;
+    width: 100%;
 }

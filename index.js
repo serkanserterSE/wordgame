@@ -7,8 +7,10 @@ window.GameSettings = {
 };
 window.Current = {
     WordLength: 0,
-    TypingIndex: 0
+    TypingIndex: 0,
+    Answer: ""
 }
+window.PlayerResults = [];
 $(document).ready(function () {
     setTimeout(() => {
         $(".main").css("display", "block");
@@ -24,7 +26,6 @@ function logKey(e) {
         } else if ((e.which <= 90 && e.which >= 48 || [219, 221, 186, 222, 191, 220].includes(e.which))
             && (window.Current.TypingIndex <= window.Current.WordLength && window.Current.TypingIndex >= 0)) {
             setCharBox(e.key);
-            window.Current = { WordLength: window.Current.WordLength, TypingIndex: (window.Current.TypingIndex + 1) };
         }
     }
 }
@@ -45,36 +46,45 @@ function SetGameSample() {
 function ClearGameSample() {
     $(".game-panel").html("");
     $(".game-text-panel > span").html("");
+    window.Current.Answer = "";
 }
 
 function GenerateGamePanel(wordSample) {
     if ('content' in document.createElement('template')) {
         var gamePanel = document.querySelector(".game-panel");
-        var template = document.querySelector('#gamepanelbox');
-        var whitespaceIndexes = findWhiteSpace(wordSample.Text);
-        wordSample.Text.replace(' ', '').split("").forEach((element, index) => {
-            var clone = template.content.cloneNode(true);
-            var box = clone.querySelectorAll(".game-panel-char-box");
-            box[0].id = "divchar" + index;
-            var boxSpan = clone.querySelectorAll(".game-panel-char-box>span");
-            boxSpan[0].id = "char" + index;;
-            boxSpan[0].textContent = " ";
-            if (index == 0)
-                boxSpan[0].classList.add('typing');
-            else
-                box[0].classList.add('closed');
-            if (whitespaceIndexes.includes(index)) {
-                box[0].style.marginLeft = "30px";
+        var wordList = wordSample.Text.split("");
+        var charIndex = 0;
+        for (let index = 0; index < wordList.length; index++) {
+            var element = wordList[index];
+            if (element == " ") {
+                var template = document.querySelector('#gamepanelboxspace');
+                var clone = template.content.cloneNode(true);
+                var box = clone.querySelectorAll(".flex-break");
+                gamePanel.appendChild(clone);
+            } else {
+                var template = document.querySelector('#gamepanelbox');
+                var clone = template.content.cloneNode(true);
+                var box = clone.querySelectorAll(".game-panel-char-box");
+                box[0].id = "divchar" + charIndex;
+                var boxSpan = clone.querySelectorAll(".game-panel-char-box>span");
+                boxSpan[0].id = "char" + charIndex;;
+                boxSpan[0].textContent = " ";
+                if (charIndex == 0)
+                    boxSpan[0].classList.add('typing');
+                else
+                    box[0].classList.add('closed');
+                gamePanel.appendChild(clone);
+                charIndex++;
             }
-            gamePanel.appendChild(clone);
-        });
+        }
         window.GameText = {
             className: "game-text-panel > span",
             text: wordSample.Meaning,
             index: 0,
             typeSpeed: 20
         };
-        window.Current = { WordLength: wordSample.Length, TypingIndex: 0 };
+        window.Current.WordLength = wordSample.Length;
+        window.Current.TypingIndex = 0;
         gameTextTypeAnimation()
     } else {
         console.error("template")
@@ -131,6 +141,8 @@ function setCharBox(char) {
     $("#divchar" + index).addClass("opened");
     $("#divchar" + (index + 1)).removeClass("closed");
     $("#char" + (index + 1)).addClass("typing");
+    window.Current.Answer = window.Current.Answer + char.turkishToUpper()
+    window.Current.TypingIndex = (window.Current.TypingIndex + 1);
 }
 
 function removeCharBox() {
@@ -141,16 +153,12 @@ function removeCharBox() {
     $("#divchar" + (index - 1)).addClass("closed");
     $("#char" + (index - 1)).addClass("typing");
     $("#char" + (index - 1)).html("");
-
-    let ind = (window.Current.TypingIndex - 1) < 0 ? 0 : (window.Current.TypingIndex - 1);
-    window.Current = { WordLength: window.Current.WordLength, TypingIndex: ind };
+    window.Current.TypingIndex = (window.Current.TypingIndex - 1) < 0 ? 0 : (window.Current.TypingIndex - 1);
+    window.Current.Answer = window.Current.Answer.substring(0, (window.Current.Answer.length - 1));
 }
 
 function keyButtonClick(key) {
     setCharBox(key);
-    window.Current = {
-        WordLength: window.Current.WordLength, TypingIndex: (window.Current.TypingIndex + 1)
-    }
 }
 
 function gameTextTypeAnimation() {
@@ -173,8 +181,23 @@ function findWhiteSpace(text) {
 }
 
 function nextSample() {
-    if (window.GameSettings.WordSampleIndex < (window.GameSettings.WordsSample.length - 1)) {
+    console.log(window.GameSettings.WordSampleIndex);
+    console.log(window.GameSettings.WordsSample.length - 1);
+
+    if (window.GameSettings.WordSampleIndex <= (window.GameSettings.WordsSample.length - 1)) {
+        var wordSample = window.GameSettings.WordsSample[window.GameSettings.WordSampleIndex].Text;
+        var wsList = wordSample.replace(/\s/g, '').split("");
+        var result = 0;
+        for (let i = 0; i < wsList.length; i++) {
+            let char = wsList[i];
+            if (window.Current.Answer[i] == char) {
+                result++;
+            }
+        }
+        window.PlayerResults.push({ WordSample: wordSample, Answer: window.Current.Answer, Result: wsList.length == result });
         window.GameSettings.WordSampleIndex = window.GameSettings.WordSampleIndex + 1;
         SetGameSample();
+    } else {
+        console.log(window.PlayerResults);
     }
 }
