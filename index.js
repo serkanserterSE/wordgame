@@ -235,7 +235,6 @@ function RenderGameResult() {
 }
 
 function StartNewGame2() {
-    $("#answers").html("");
     $(".gameresult").css("display", "none");
     SetWordSample();
 }
