@@ -215,7 +215,6 @@ function FinishGame() {
 
 
 function RenderGameResult() {
-    $("#answers").html(""); 
     if ('content' in document.createElement('template')) {
         var answers = document.querySelector("#answers");
         var template = document.querySelector('#gameresult');
@@ -234,7 +233,8 @@ function RenderGameResult() {
 }
 
 function StartNewGame2() {
-    window.PlayerResults=[];
+    $("#answers").html("");
+    window.PlayerResults = [];
     $(".gameresult").css("display", "none");
     SetWordSample();
 }
