@@ -2,6 +2,7 @@ body {
     background: #000;
     margin: 0;
     font-family: consolas;
+    color: #0f0;
 }
 
 .main {
@@ -11,7 +12,6 @@ body {
     width: 100%;
     left: 0;
     top: 0;
-    color: #0f0;
     opacity: 0.9;
 }
 
@@ -42,8 +42,26 @@ body {
     width: 100%;
     left: 0;
     top: 0;
-    color: #0f0;
     opacity: 0.9;
+}
+
+.gameresult {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 10%;
+    opacity: 0.9;
+    width: 99%;
+}
+
+.gameresult-list-item{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    align-content: space-around;
+    border-bottom: 1px solid #0f0;
+    font-size: 18px;
 }
 
 .game-text-panel {

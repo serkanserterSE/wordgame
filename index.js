@@ -1,5 +1,5 @@
-
 document.addEventListener('keyup', logKey);
+window.WordDb = [];
 window.GameSettings = {
     IsGameStarted: false,
     WordsSample: [],
@@ -181,10 +181,7 @@ function findWhiteSpace(text) {
 }
 
 function nextSample() {
-    console.log(window.GameSettings.WordSampleIndex);
-    console.log(window.GameSettings.WordsSample.length - 1);
-
-    if (window.GameSettings.WordSampleIndex <= (window.GameSettings.WordsSample.length - 1)) {
+    if (window.GameSettings.WordSampleIndex < window.GameSettings.WordsSample.length) {
         var wordSample = window.GameSettings.WordsSample[window.GameSettings.WordSampleIndex].Text;
         var wsList = wordSample.replace(/\s/g, '').split("");
         var result = 0;
@@ -196,8 +193,97 @@ function nextSample() {
         }
         window.PlayerResults.push({ WordSample: wordSample, Answer: window.Current.Answer, Result: wsList.length == result });
         window.GameSettings.WordSampleIndex = window.GameSettings.WordSampleIndex + 1;
-        SetGameSample();
+        if (window.GameSettings.WordSampleIndex == window.GameSettings.WordsSample.length) {
+            FinishGame();
+        } else {
+            SetGameSample();
+        }
+
     } else {
         console.log(window.PlayerResults);
+    }
+}
+
+function FinishGame() {
+    ClearGameSample();
+    $(".main").css("display", "none");
+    $(".game").css("display", "none");
+    window.GameSettings.IsGameStarted = false;
+    window.PlayerResults=[];
+    $(".gameresult").css("display", "block");
+    RenderGameResult();
+}
+
+
+function RenderGameResult() {
+    $("#answers").html(""); 
+    if ('content' in document.createElement('template')) {
+        var answers = document.querySelector("#answers");
+        var template = document.querySelector('#gameresult');
+        window.PlayerResults.forEach((key, index) => {
+            var clone = template.content.cloneNode(true);
+            var box_word = clone.querySelectorAll("#word");
+            var box_answer = clone.querySelectorAll("#answer");
+            box_word[0].textContent = key.WordSample;
+            box_answer[0].textContent = key.Answer;
+            answers.appendChild(clone);
+        });
+
+    } else {
+        console.error("template")
+    }
+}
+
+function StartNewGame2() {
+    $("#answers").html("");
+    $(".gameresult").css("display", "none");
+    SetWordSample();
+}
+
+
+function SetWordSample() {
+    window.GameSettings.WordsSample = [];
+    let wordSampleCount = 6;
+    if (window.WordDb.length > 0) {
+        let pageNumber = Math.floor(Math.random() * (window.WordDb.length - 1));
+        let element = window.WordDb[pageNumber].List;
+        for (let i = 0; i < wordSampleCount; i++) {
+            let wordOrder = Math.floor(Math.random() * 100);
+            window.GameSettings.WordsSample.push(element[wordOrder]);
+        }
+        StartNewGame();
+    } else {
+        let pageNumber = Math.floor(Math.random() * 500);
+        let pageName = "W" + pageNumber;
+        if (window.WordDb.some(el => el.PageName === pageName)) {
+            let element = window.WordDb.find(el => el.PageName === pageName).List;
+            for (let i = 0; i < wordSampleCount; i++) {
+                let wordOrder = Math.floor(Math.random() * 100);
+                window.GameSettings.WordsSample.push(element[wordOrder]);
+            }
+            StartNewGame();
+        } else {
+            let dburl = "https://eu2-steady-wallaby-30045.upstash.io/HGETALL/" + pageName
+            fetch(dburl, {
+                headers: {
+                    Authorization: "Bearer AnVdASQgNzUwZjA2ODUtNmRmOS00NTQxLWE1MzQtMzg4OGUzNGQyNjgwl3B3cApOHVL49wf81bliXZMKhZMuX1qO4ZavngoUJJE="
+                }
+            }).then(response => response.json())
+                .then(data => {
+                    data.result.forEach(element => {
+                        try {
+                            let val = JSON.parse(element);
+                            if (Array.isArray(val)) {
+                                window.WordDb.push({ PageName: pageName, PageNumber: pageNumber, List: val });
+                                for (let i = 0; i < wordSampleCount; i++) {
+                                    let wordOrder = Math.floor(Math.random() * 100);
+                                    window.GameSettings.WordsSample.push(val[wordOrder]);
+                                }
+                                StartNewGame();
+                            }
+                        } catch { }
+                    });
+                });
+        }
     }
 }

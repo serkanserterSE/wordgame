@@ -13,19 +13,7 @@
             var letters = { "i": "İ", "ş": "Ş", "ğ": "Ğ", "ü": "Ü", "ö": "Ö", "ç": "Ç", "ı": "I" };
             string = string.replace(/(([iışğüçö]))/g, function (letter) { return letters[letter]; })
             return string.toUpperCase();
-        }
-
-        $(document).ready(function () {
-            //fetch("https://eu2-steady-wallaby-30045.upstash.io/get/W1", {
-            //    headers: {
-            //        Authorization: "Bearer AnVdASQgNzUwZjA2ODUtNmRmOS00NTQxLWE1MzQtMzg4OGUzNGQyNjgwl3B3cApOHVL49wf81bliXZMKhZMuX1qO4ZavngoUJJE="
-            //    }
-            //}).then(response => response.json())
-            //    .then(data => console.log(data));
-
-            window.GameSettings.WordsSample = [{ "Number": 53201, "Meaning": "Kızgınlık anında söylenen bir söz", "Text": "ZIKKIMIN KÖKÜ", "Length": 13 }, { "Number": 53202, "Meaning": "Şiirde uyaktan sonra tekrarlanan, aynı harflerden oluşan kelime veya ek, yedek", "Text": "REDİF", "Length": 5 }];
-        });
-
+        }  
     </script>
 </head>
 
@@ -43,7 +31,7 @@
             <div>
                 <div class="typing-container">
                     <div class="typed-out">
-                        <button type="button" class="main-panel-button" onclick="StartNewGame()">Başla</button>
+                        <button type="button" class="main-panel-button" onclick="SetWordSample()">Yeni Oyun</button>
                     </div>
                 </div>
             </div>
@@ -65,6 +53,29 @@
             </div>
         </div>
     </div>
+    <div class="gameresult">
+        <div style="display: flex;flex-direction: column;justify-content: space-around;align-items: center;">
+            <div class="typing-container">
+                <div class="typed-out" style="font-size: 24px;">
+                    Tebrikler!
+                </div>
+            </div>
+            <div id="answersHeader" style="margin-top: 10px;">
+                <div class="gameresult-list-item" style="background-color:#0f0; color:#000;width: 350px;">
+                    <div>Kelime</div>
+                    <div>Yanıtınız</div>
+                </div>
+            </div>
+            <div id="answers" style="width: 350px;"></div>
+            <div style="margin-top: 10px;">
+                <div class="typing-container">
+                    <div class="typed-out">
+                        <button type="button" class="main-panel-button" onclick="StartNewGame2()">Yeni Oyun :D</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <template id="gamepanelbox">
         <div class="game-panel-char-box"><span></span></div>
     </template>
@@ -73,6 +84,12 @@
     </template>
     <template id="keybutton">
         <div class="key-button"></div>
+    </template>
+    <template id="gameresult">
+        <div class="gameresult-list-item">
+            <div id="word"></div>
+            <div id="answer"></div>
+        </div>
     </template>
     <script type="text/javascript" src="matrix/matrix.js"></script>
     <link rel="stylesheet" href="matrix/matrix.css" />
