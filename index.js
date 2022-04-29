@@ -209,7 +209,6 @@ function FinishGame() {
     $(".main").css("display", "none");
     $(".game").css("display", "none");
     window.GameSettings.IsGameStarted = false;
-    window.PlayerResults=[];
     $(".gameresult").css("display", "block");
     RenderGameResult();
 }
@@ -235,6 +234,7 @@ function RenderGameResult() {
 }
 
 function StartNewGame2() {
+    window.PlayerResults=[];
     $(".gameresult").css("display", "none");
     SetWordSample();
 }
