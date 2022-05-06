@@ -3,12 +3,15 @@ window.WordDb = [];
 window.GameSettings = {
     IsGameStarted: false,
     WordsSample: [],
-    WordSampleIndex: 0
+    WordSampleIndex: 0,
+    WordsSampleTipIndexes: [],
+    HasGivenTips: false
 };
 window.Current = {
     WordLength: 0,
     TypingIndex: 0,
-    Answer: ""
+    Answer: "",
+    WordText: ""
 }
 window.PlayerResults = [];
 $(document).ready(function () {
@@ -47,6 +50,7 @@ function ClearGameSample() {
     $(".game-panel").html("");
     $(".game-text-panel > span").html("");
     window.Current.Answer = "";
+    window.Current.WordText = "";
 }
 
 function GenerateGamePanel(wordSample) {
@@ -60,6 +64,7 @@ function GenerateGamePanel(wordSample) {
                 var template = document.querySelector('#gamepanelboxspace');
                 var clone = template.content.cloneNode(true);
                 var box = clone.querySelectorAll(".flex-break");
+                box[0].textContent = "-";
                 gamePanel.appendChild(clone);
             } else {
                 var template = document.querySelector('#gamepanelbox');
@@ -67,7 +72,7 @@ function GenerateGamePanel(wordSample) {
                 var box = clone.querySelectorAll(".game-panel-char-box");
                 box[0].id = "divchar" + charIndex;
                 var boxSpan = clone.querySelectorAll(".game-panel-char-box>span");
-                boxSpan[0].id = "char" + charIndex;;
+                boxSpan[0].id = "char" + charIndex;
                 boxSpan[0].textContent = " ";
                 if (charIndex == 0)
                     boxSpan[0].classList.add('typing');
@@ -85,6 +90,7 @@ function GenerateGamePanel(wordSample) {
         };
         window.Current.WordLength = wordSample.Length;
         window.Current.TypingIndex = 0;
+        window.Current.WordText = wordSample.Text;
         gameTextTypeAnimation()
     } else {
         console.error("template")
@@ -133,7 +139,7 @@ function RenderKeyButtons() {
     }
 }
 
-function setCharBox(char) {
+function setCharBox(char, _index) {
     let index = window.Current.TypingIndex;
     $("#char" + index).html(char.turkishToUpper());
     $("#char" + index).removeClass("typing");
@@ -285,4 +291,9 @@ function SetWordSample() {
                 });
         }
     }
+}
+
+function GetTips() {
+    let tipIndex = Math.floor(Math.random() * window.Current.WordLength);
+
 }
